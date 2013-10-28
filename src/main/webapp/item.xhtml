@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<script src="js/bootstrap.js"></script>
+<head>
+<title>Insert title here</title>
+<link href="css/bootstrap.css" rel="stylesheet"></link>
+<link href="css/estrutura.css" rel="stylesheet"></link>
+</head>
+<h:body>
+	<div class="navbar navbar-inverse">
+		<div class="navbar-inner">
+			<div class="container">
+				<button type="button" class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="brand" href="#">Mercado - Betha Sistemas</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li>
+							<h:link value="Fazer Compras" outcome="index" />
+						</li>
+						<li><h:link value="Carrinho" outcome="listaCompras" /></li>
+						<li class="active"><h:link value="Itens" outcome="item" /></li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="jumbotron">
+		<h2>Para o gerenciamento e controle das suas compras!</h2>
+		<p class="lead">No menu lista você tem o controle total em relação
+			aos itens pretendidos.</p>
+	</div>
+	<h:form>
+			<div class="span1"> </div>
+			<div class="span4">
+				<h:outputText id="msgSucesso" value="#{ItemController.msg}" rendered="#{not empty ItemController.msg}" styleClass="label label-success" />
+				<h:outputText id="msgErro" value="#{ItemController.erro}" rendered="#{not empty ItemController.erro}" styleClass="label label-important" />
+				<table>
+					<tr>
+						<td><h:outputText value="Nome" />:</td>
+						<td><h:inputText value="#{ItemController.item.nome}"/></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="Preco" />:</td>
+						<td>
+							<h:inputText value="#{ItemController.item.preco}" />
+						</td>
+					</tr>
+					<tr>
+						<td><h:commandButton value="salvar" actionListener="#{ItemController.savar}" styleClass="btn btn-primary" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="span4">
+				<h:dataTable value="#{ItemController.itens}" var="i"
+					rendered="#{not empty ItemController.itens}" border="0"
+					styleClass="table table-striped" style="width:500px">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Nome" />
+						</f:facet>
+						<h:commandLink value="#{i.nome}" actionListener="#{ItemController.editar}">
+							<f:param name="id" value="#{i.id}" />
+						</h:commandLink>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Preco" />
+						</f:facet>
+						<h:outputText value="#{i.preco}" />
+
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<h:commandLink value="excluir" actionListener="#{ItemController.deletar}" styleClass="btn-small btn-danger">
+							<f:param name="id" value="#{i.id}" />
+							
+						</h:commandLink>
+					</h:column>
+				</h:dataTable>
+			</div>
+		</h:form>
+</h:body>
+</html>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<script src="js/bootstrap.js"></script>
+<head>
+<title>Insert title here</title>
+<link href="css/bootstrap.css" rel="stylesheet"></link>
+<link href="css/estrutura.css" rel="stylesheet"></link>
+</head>
+<h:body>
+	<div class="navbar navbar-inverse">
+		<div class="navbar-inner">
+			<div class="container">
+				<button type="button" class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="brand" href="#">Mercado - Betha Sistemas</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li  class="active"><h:link value="Fazer Compras" outcome="index" /></li>
+						<li><h:link value="Carrinho" outcome="listaCompras" /></li>
+						<li><h:link value="Itens" outcome="item" /></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="jumbotron">
+		<h2>Para o gerenciamento e controle das suas compras!</h2>
+		<p class="lead">Utilize os menus Itens e Carrinho acima para realizar todo o cadastro necessário e, posteriormente, <br />o menu Fazer Compras para gerenciar seus produtos</p>
+	</div>
+	<h:form>
+		<h:outputText value="#{carrinhoController.msg}" id="msg" />
+		<h:selectOneMenu id="listaSele" value="#{CarrinhoController.listaSele}">
+			<f:selectItems value="#{CarrinhoController.listas}" />
+		</h:selectOneMenu>
+		<h:commandButton value="ver" actionListener="#{CarrinhoController.montaLista}" id="add" />
+		
+		<h:dataTable id="listaCarrinho" value="#{CarrinhoController.listaCarrinho}" rendered="#{not empty CarrinhoController.listaCarrinho}" var="c" border="0" styleClass="table table-striped" style="width:600px;">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Nome" />
+				</f:facet>
+				<h:outputText value="#{c.item.nome}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Valor" />
+				</f:facet>
+				<h:outputText value="#{c.item.preco}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Preço Pago" />
+				</f:facet>
+				<h:outputText id="valorPago" value="#{c.precoPago}"  rendered="#{c.pagou}" />
+				<h:inputText id="txtValorPago" value="#{c.precoPago}"  rendered="#{!c.pagou}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Estado" />
+				</f:facet>
+				<h:commandButton value="comprar" actionListener="#{carrinhoController.realizarCompra}" rendered="#{!c.pagou}" styleClass="btn-small btn-danger">
+					<f:param name="idItem" value="#{c.item.id}" />
+					<f:param name="idLista" value="#{c.lista.id}" />
+					<f:param name="preco" value="#{c.precoPago}" />
+				</h:commandButton>
+				<h:outputText value="Comprado" rendered="#{c.pagou}" />
+			</h:column>
+		</h:dataTable>	
+	</h:form>
+</h:body>
+</html>
